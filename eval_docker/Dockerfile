@@ -22,6 +22,10 @@ COPY external/MacroPlacement/Testcases/ICCAD04/ /challenge/external/MacroPlaceme
 # Copy PlacementCost evaluator (plc_client_os from TILOS submodule)
 COPY external/MacroPlacement/CodeElements/Plc_client/ /challenge/external/MacroPlacement/CodeElements/Plc_client/
 
+# Copy RePlAce static binary (required by vmoon/archgen_vmoon_placer submissions)
+COPY external/MacroPlacement/Flows/util/RePlAceFlow/ /challenge/external/MacroPlacement/Flows/util/RePlAceFlow/
+RUN chmod +x /challenge/external/MacroPlacement/Flows/util/RePlAceFlow/RePlAce-static
+
 # Copy example submissions (for smoke testing)
 COPY submissions/examples/ /challenge/submissions/examples/
 
