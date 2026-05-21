@@ -92,6 +92,11 @@ output/
 BENCHMARK_EVALUATION_RESULTS.md
 NETLIST_CLEANING_SUMMARY.md
 
+# Exception: Allow bundled DREAMPlace install (pre-built CPU-only, needed for evaluation)
+!submissions/dreamplace/
+!submissions/dreamplace/**
+!submissions/dreamplace/**/*.so
+
 # Experimental versioned placers (v1-v60, not part of submission)
 submissions/archgen_v[0-9]_placer.py
 submissions/archgen_v[0-9][0-9]_placer.py
