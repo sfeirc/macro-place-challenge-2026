@@ -6,6 +6,20 @@
 
 Partcl and Hudson River Trading are excited to co-host a competition to solve the macro placement problem. 
 
+## My Submission — Team "Archgen"
+
+*(This repo is the official competition scaffold, forked to enter this challenge. Everything below "About Macro Placement" is the organizers' own documentation. This section is the only part that's mine.)*
+
+- **Result**: ranked **#15 out of 68 teams**, verified average proxy cost **1.0948** across all 17 IBM benchmarks, zero overlaps. Judge-verified score was 5.6% *better* than my own self-reported number — independently confirmed, not self-graded.
+- **Approach**: a feature-driven hybrid meta-router ([`submissions/archgen_vhybrid_placer.py`](submissions/archgen_vhybrid_placer.py)) rather than a single placement algorithm. It measures each circuit's characteristics (hard-macro count, net count, connectivity ratio, macro-area fraction) and routes it to whichever of five underlying strategies empirically performs best for that profile:
+  - `v22` / `v22cong` — eplace global placement, with an optional congestion-biased detailed placement pass for sparse-macro circuits
+  - `vdp` — DREAMPlace global placement → local-neighborhood-search detailed placement
+  - `vmoon` — RePlAce global placement → v7c detailed placement + LNS
+  - `v7c` — the detailed-placement/LNS stage reused by both `vdp` and `vmoon`
+  
+  The routing thresholds (e.g. "large circuits with connectivity ratio ≥ 40 → vmoon, −9.8% to −14.7% measured improvement") were derived by benchmarking each strategy on every IBM circuit individually and picking the best one per profile — see the decision log in the docstring of `archgen_vhybrid_placer.py` for the full reasoning and measured deltas per benchmark.
+- **Why a hybrid**: no single global-placement algorithm won across all 17 benchmarks — RePlAce's wirelength-optimal clustering created congestion hotspots on sparse-macro circuits, while DREAMPlace underperformed on high-connectivity ones. Routing per-circuit closed most of that gap.
+
 ## About Macro Placement
 
 Macro placement is the problem of positioning large fixed-size blocks (SRAMs, IPs, analog macros, etc.) on a chip floorplan so that routing congestion, timing, power delivery, and area constraints are balanced. Unlike standard-cell placement, macros have strong geometric and connectivity constraints, so the challenge is to explore a highly discrete design space while minimizing wirelength, avoiding blockages, and preserving downstream routability and timing quality.
